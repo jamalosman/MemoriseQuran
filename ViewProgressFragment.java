@@ -26,5 +26,9 @@ public class ViewProgressFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_view_progress, container, false);
     }
 
+    public void buttonPressed(View view){
+
+    }
+
 
 }
