@@ -1,4 +1,4 @@
-package com.gre.jamal.memorisequran.revision;
+package com.gre.jamal.memorisequran.revision.memory;
 
 import org.jqurantree.orthography.Verse;
 
@@ -10,6 +10,8 @@ import java.util.Random;
 public abstract class MemoryExercise {
 
     protected Verse verse;
+    protected ExerciseResult result;
+    protected String userAnswer;
 
     protected MemoryExercise(Verse verse) {
         this.verse = verse;
@@ -39,6 +41,17 @@ public abstract class MemoryExercise {
             int index = rnd.nextInt(i + 1);
             // Simple swap
             String a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
+    }
+
+    protected void shuffleArray(int[] ar) {
+        Random rnd = new Random();
+        for (int i = ar.length - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            int a = ar[index];
             ar[index] = ar[i];
             ar[i] = a;
         }

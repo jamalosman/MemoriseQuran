@@ -1,4 +1,6 @@
-package com.gre.jamal.memorisequran.revision;
+package com.gre.jamal.memorisequran.revision.memory;
+
+import com.gre.jamal.memorisequran.revision.QuranSection;
 
 import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Verse;
@@ -13,7 +15,9 @@ public abstract class MemoryTest {
     protected QuranSection quranSection;
     protected int testLength;
     protected ArrayList<Chapter> chapters;
-    protected MemoryExercise startExercise;
+    protected MemoryExercise currentExercise;
+    protected ArrayList<ExerciseResult> exerciseResults;
+
     protected int testType;
 
     public final static int TEST_LENGTH_SHORT = 1;
@@ -22,7 +26,7 @@ public abstract class MemoryTest {
 
     public final static int TEST_TYPE_VERSE = 1;
     public final static int TEST_TYPE_WORD = 2;
-    public final static int TEST_TYPE_VOWELLING = 3;
+    public final static int TEST_TYPE_VOWEL = 3;
 
     /**
      * @param quranSection a QuranSection object which sets the bounds of the test
@@ -33,7 +37,7 @@ public abstract class MemoryTest {
         this.quranSection = quranSection;
         this.testLength = testLevel;
         this.chapters = chapters;
-  //      this.startExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
+  //      this.currentExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
     }
 
     public MemoryTest(QuranSection quranSection, int testLevel, Chapter chapter)
@@ -42,7 +46,7 @@ public abstract class MemoryTest {
         this.testLength = testLevel;
         this.chapters = new ArrayList<Chapter>();
         this.chapters.add(chapter);
-     //   this.startExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
+     //   this.currentExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
     }
 
 

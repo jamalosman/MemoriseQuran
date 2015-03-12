@@ -1,4 +1,8 @@
-package com.gre.jamal.memorisequran.revision;
+package com.gre.jamal.memorisequran.revision.verse;
+
+import com.gre.jamal.memorisequran.revision.QuranSection;
+import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
+import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
 
 import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Document;
@@ -23,7 +27,7 @@ public class VerseOrderTest extends MemoryTest {
      */
     public VerseOrderTest(QuranSection quranSection, int testLength, ArrayList<Chapter> chapters) {
         super(quranSection, testLength, chapters);
-        this.startExercise = new VerseOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
+        this.currentExercise = new VerseOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_VERSE;
 
@@ -31,7 +35,7 @@ public class VerseOrderTest extends MemoryTest {
 
     public VerseOrderTest(QuranSection quranSection, int testLength, Chapter chapter) {
         super(quranSection, testLength, chapter);
-        this.startExercise = new VerseOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
+        this.currentExercise = new VerseOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_VERSE;
     }
@@ -48,10 +52,15 @@ public class VerseOrderTest extends MemoryTest {
 
     @Override
     public MemoryExercise getNextExercise() {
+        //save result
+        VerseExerciseResult result = ((VerseOrderExercise)currentExercise).getResult();
+        exerciseResults.add(result);
+        
         Verse temp = currentVerse;
         if (currentVerse.getVerseNumber() != currentVerse.getChapter().getVerseCount()) {
             currentVerse = currentVerse.getChapter().getVerse(currentVerse.getVerseNumber() + 1);
-            return new VerseOrderExercise(temp);
+            currentExercise =  new VerseOrderExercise(temp);
+            return currentExercise;
         } else {
             return null;
         }

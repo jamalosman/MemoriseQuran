@@ -1,4 +1,6 @@
-package com.gre.jamal.memorisequran.revision;
+package com.gre.jamal.memorisequran.revision.word;
+
+import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
 
 import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Verse;

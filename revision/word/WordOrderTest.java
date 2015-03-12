@@ -1,4 +1,9 @@
-package com.gre.jamal.memorisequran.revision;
+package com.gre.jamal.memorisequran.revision.word;
+
+import com.gre.jamal.memorisequran.revision.QuranSection;
+import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
+import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
+import com.gre.jamal.memorisequran.revision.verse.VerseOrderExercise;
 
 import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Document;
@@ -24,14 +29,14 @@ public class WordOrderTest extends MemoryTest {
      */
     public WordOrderTest(QuranSection quranSection, int testLength, ArrayList<Chapter> chapters) {
         super(quranSection, testLength, chapters);
-        this.startExercise = new WordOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()), 0);
+        this.currentExercise = new WordOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()), 0);
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_WORD;
     }
 
     public WordOrderTest(QuranSection quranSection, int testLength, Chapter chapter) {
         super(quranSection, testLength, chapter);
-        this.startExercise = new WordOrderExercise(chapter.getVerse(quranSection.getStartVerseIndex()), 0);
+        this.currentExercise = new WordOrderExercise(chapter.getVerse(quranSection.getStartVerseIndex()), 0);
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_WORD;
     }

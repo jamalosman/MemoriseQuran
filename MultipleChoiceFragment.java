@@ -12,11 +12,11 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.gre.jamal.memorisequran.revision.MemoryExercise;
-import com.gre.jamal.memorisequran.revision.MemoryTest;
+import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
+import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
 import com.gre.jamal.memorisequran.revision.QuranSection;
-import com.gre.jamal.memorisequran.revision.VerseOrderTest;
-import com.gre.jamal.memorisequran.revision.WordOrderTest;
+import com.gre.jamal.memorisequran.revision.verse.VerseOrderTest;
+import com.gre.jamal.memorisequran.revision.word.WordOrderTest;
 
 import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Document;
@@ -90,7 +90,7 @@ public class MultipleChoiceFragment extends Fragment {
                     test = new VerseOrderTest(new QuranSection(chapterNumber),
                             VerseOrderTest.TEST_LENGTH_MEDUIUM, Document.getChapter(chapterNumber));
                     break;
-                case MemoryTest.TEST_TYPE_VOWELLING:
+                case MemoryTest.TEST_TYPE_VOWEL:
                     ;
                     break;
                 case -1:

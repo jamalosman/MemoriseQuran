@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.gre.jamal.memorisequran.revision.MemoryTest;
+import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
 
 
 public class RevisionTestActivity extends ActionBarActivity {
