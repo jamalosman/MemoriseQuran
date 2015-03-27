@@ -82,13 +82,8 @@ public class VerseOrderExercise extends MemoryExercise {
 
     public VerseExerciseResult getResult(){
         VerseExerciseResult result = new VerseExerciseResult(verse.getChapterNumber(),verse.getVerseNumber(),
-                ExerciseResult.RESULT_TYPE_VERSE,isCorrect(userAnswer));
+                ExerciseResult.RESULT_TYPE_VERSE,isCorrect(userAnswer), userAnswer);
         result.setCorrectVerse(this.correctVerse.getVerseNumber());
-        for (int i = 0; i < 4; i++) {
-            if (answerChoices[i].equals(userAnswer)){
-                result.setChosenVerse(answerChoiceLocations[i]);
-            }
-        }
         this.result = result;
         return result;
     }

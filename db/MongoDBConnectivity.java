@@ -1,4 +1,4 @@
-package com.gre.jamal.memorisequran.mongodb;
+package com.gre.jamal.memorisequran.db;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;

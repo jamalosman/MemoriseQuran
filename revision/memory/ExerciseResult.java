@@ -5,13 +5,13 @@ package com.gre.jamal.memorisequran.revision.memory;
  */
 public abstract class ExerciseResult {
     protected int chapterNumber;
-    protected int verseNumber; //the verse where the mistake was made on (the correct answer
+    protected int verseNumber; //the verse where the mistake was made on (not the correct answer)
     protected int exerciseType;
     protected boolean correct = false;
 
     public final static int RESULT_TYPE_VERSE = 1;
     public final static int RESULT_TYPE_WORD = 2;
-    public final static int RESULT_TPPE_VOWEL = 3;
+    public final static int RESULT_TYPE_VOWEL = 3;
 
     protected ExerciseResult(int chapterNumber, int verseNumber, int exerciseType) {
         this.chapterNumber = chapterNumber;

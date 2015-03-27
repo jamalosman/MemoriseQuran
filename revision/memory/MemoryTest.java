@@ -6,6 +6,7 @@ import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Verse;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by jamal on 14/01/15.
@@ -17,6 +18,7 @@ public abstract class MemoryTest {
     protected ArrayList<Chapter> chapters;
     protected MemoryExercise currentExercise;
     protected ArrayList<ExerciseResult> exerciseResults;
+    protected Date testDate;
 
     protected int testType;
 
@@ -46,61 +48,13 @@ public abstract class MemoryTest {
         this.testLength = testLevel;
         this.chapters = new ArrayList<Chapter>();
         this.chapters.add(chapter);
+        this.testDate = new Date();
      //   this.currentExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
     }
 
 
 
-    /*
-         * runs the test
-         */
-    /*
-    public void runRevisionTest(Chapter chapter) {
-        if (chapter.getChapterNumber() == quranSection.getStartChapterIndex()) {
-            int loopStartPosition, loopEndPosition;
-            if (quranSection.getStartChapterIndex() == quranSection.getEndChapterIndex()) {
-                loopStartPosition = quranSection.getStartVerseIndex();
-                loopEndPosition = quranSection.getEndVerseIndex();
-            } else {
-                loopStartPosition = quranSection.getStartVerseIndex();
-                loopEndPosition = chapter.getVerseCount();
-            }
-            for (int i = loopStartPosition; i < loopEndPosition; i++) {
-                generateExercise(chapter.getVerse(i));
-            }
-        } else if (chapter.getChapterNumber() != quranSection.getStartChapterIndex()
-                && chapter.getChapterNumber() != quranSection.getEndChapterIndex()) {
-            for (int i = 0; i < chapter.getVerseCount(); i++) {
-                generateExercise(chapter.getVerse(i));
-            }
-        } else if (chapter.getChapterNumber() == quranSection.getEndChapterIndex()) {
-            for (int i = 0; i < quranSection.getEndVerseIndex(); i++) {
-                generateExercise(chapter.getVerse(i));
-            }
-        }
-    }
-    */
 
-    //public abstract MemoryExercise getNextExercise(MemoryExercise exercise);
-    /*
-     {
-
-        Verse verse = exercise.getVerse();
-        Chapter chapter = verse.getChapter();
-        if (verse.getVerseNumber() < chapter.getVerseCount()) {
-            return new MemoryExercise(chapter.getVerse(verse.getVerseNumber() +1));
-        } else if (verse.getVerseNumber() == chapter.getVerseCount()
-                && verse.getChapterNumber() == quranSection.getEndChapterIndex()) {
-            return null;
-        } else if (verse.getVerseNumber() == chapter.getVerseCount()
-                && verse.getChapterNumber() != quranSection.getEndChapterIndex()){
-            return new MemoryExercise(Document.getVerse(verse.getChapterNumber() +1, 1));
-        } else {
-            throw new JQuranTreeException(Errors.INVALID_VERSE_NUMBER);
-        }
-
-    }
-     */
 
     public int getTestType() {
         return testType;
