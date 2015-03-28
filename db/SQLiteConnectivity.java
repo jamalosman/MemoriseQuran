@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.gre.jamal.memorisequran.App;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +29,10 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
     public static String DB_NAME = "mq.db";// database name
     static String ASSETS_DB_FOLDER = "db";
     private SQLiteDatabase db;
+    private static SQLiteConnectivity sqlc;
 
-    public SQLiteConnectivity(Context context, String db_name) {
+    //singleton
+    private SQLiteConnectivity(Context context, String db_name) {
         super(context, db_name, null, 2);
         if (db != null && db.isOpen())
             close();
@@ -45,6 +49,13 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
+    }
+
+    public static SQLiteConnectivity getSQLiteConn (){
+        if (sqlc == null){
+            return new SQLiteConnectivity(App.getContext(),"mq.db");
+        }
+        return sqlc;
     }
 
     public void createDataBase() throws IOException {
@@ -146,10 +157,6 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void insertMemoriser(){
-
-    }
-
     public void execNonQuery(String sql) {
         try {
             db.execSQL(sql);
@@ -159,6 +166,18 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
         } finally {
             // closeDb();
         }
+    }
+
+    /**
+     * Inserts a memoriser into the database
+     * @param user the memoriser to be entered
+     * @return the rowID of the inserted memoriser
+     */
+    public long insertMemoriser(Memoriser user){
+        String statement = user.getInsertStatement();
+        long id = db.insert("Memoriser",null,user.getContentValues());
+        user.setMemoriserID(id);
+        return id;
     }
 
 

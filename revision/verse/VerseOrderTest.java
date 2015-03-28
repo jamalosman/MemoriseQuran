@@ -1,7 +1,7 @@
 package com.gre.jamal.memorisequran.revision.verse;
 
 import com.gre.jamal.memorisequran.App;
-import com.gre.jamal.memorisequran.db.SQLiteConnectivity;
+import com.gre.jamal.memorisequran.db.Memoriser;
 import com.gre.jamal.memorisequran.revision.QuranSection;
 import com.gre.jamal.memorisequran.revision.memory.ExerciseResult;
 import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
@@ -72,8 +72,7 @@ public class VerseOrderTest extends MemoryTest {
 
     private void saveResults(){
         for (ExerciseResult result : exerciseResults){
-            SQLiteConnectivity db = new SQLiteConnectivity(App.getContext(),"mq.db");
-
+            Memoriser user = App.getUser();
         }
     }
 
