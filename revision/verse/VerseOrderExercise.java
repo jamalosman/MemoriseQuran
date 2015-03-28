@@ -44,26 +44,30 @@ public class VerseOrderExercise extends MemoryExercise {
     public VerseOrderExercise(Verse verse) {
         super(verse);
         Chapter chapter = verse.getChapter();
-        this.correctVerse = chapter.getVerse(verse.getVerseNumber() + 1);
-        this.correctAnswer = correctVerse.toUnicode();
-        this.incorrectAnswers = new String[3];
-        this.incorrectAnswerLocations = new int[3];
+        correctVerse = chapter.getVerse(verse.getVerseNumber() + 1);
+        correctAnswer = correctVerse.toUnicode();
+        incorrectAnswers = new String[3];
+        incorrectAnswerLocations = new int[3];
 
         try {
-            this.incorrectAnswerLocations[0] = correctVerse.getVerseNumber() + 1;
-            this.incorrectAnswers[0] = chapter.getVerse(incorrectAnswerLocations[0]).toUnicode();
-            this.incorrectAnswerLocations[1] = correctVerse.getVerseNumber() + 2;
-            this.incorrectAnswers[1] = chapter.getVerse(incorrectAnswerLocations[1]).toUnicode();
-            this.incorrectAnswerLocations[2] = correctVerse.getVerseNumber() + 3;
-            this.incorrectAnswers[2] = chapter.getVerse(incorrectAnswerLocations[2]).toUnicode();
+            incorrectAnswerLocations[0] = correctVerse.getVerseNumber() + 1;
+            incorrectAnswers[0] = chapter.getVerse(incorrectAnswerLocations[0]).toUnicode();
+            incorrectAnswerLocations[1] = correctVerse.getVerseNumber() + 2;
+            incorrectAnswers[1] = chapter.getVerse(incorrectAnswerLocations[1]).toUnicode();
+            incorrectAnswerLocations[2] = correctVerse.getVerseNumber() + 3;
+            incorrectAnswers[2] = chapter.getVerse(incorrectAnswerLocations[2]).toUnicode();
         } catch (JQuranTreeException jqre) {
-            this.incorrectAnswers[2] = "*** end *** ";
-            incorrectAnswers[1] = (incorrectAnswers[1] == null) ?
-                    chapter.getVerse(correctVerse.getVerseNumber() - 1).toUnicode()
-                    : incorrectAnswers[1];
-            incorrectAnswers[0] = (incorrectAnswers[0] == null) ?
-                    chapter.getVerse(correctVerse.getVerseNumber() - 2).toUnicode()
-                    : incorrectAnswers[0];
+            incorrectAnswerLocations[2] = correctVerse.getVerseNumber() - 1;
+            incorrectAnswers[2] = chapter.getVerse(incorrectAnswerLocations[2]).toUnicode();
+            if (incorrectAnswers[1] == null) {
+                incorrectAnswers[1] = chapter.getVerse(correctVerse.getVerseNumber() - 2).toUnicode();
+                incorrectAnswerLocations[1] = correctVerse.getVerseNumber() - 2;
+            }
+            if (incorrectAnswers[0] == null){
+                incorrectAnswers[0] = chapter.getVerse(correctVerse.getVerseNumber() - 3).toUnicode();
+                incorrectAnswerLocations[0] = correctVerse.getVerseNumber() - 3;
+            }
+
         }
         answerChoices = new String[4];
         answerChoices[0] = correctAnswer;
@@ -81,7 +85,11 @@ public class VerseOrderExercise extends MemoryExercise {
     }
 
     public VerseExerciseResult getResult(){
-        VerseExerciseResult result = new VerseExerciseResult(verse.getChapterNumber(),verse.getVerseNumber(),
+
+
+
+
+     VerseExerciseResult result = new VerseExerciseResult(verse.getChapterNumber(),verse.getVerseNumber(),
                 ExerciseResult.RESULT_TYPE_VERSE,isCorrect(userAnswer), userAnswer);
         result.setCorrectVerse(this.correctVerse.getVerseNumber());
         this.result = result;

@@ -49,6 +49,7 @@ public abstract class MemoryTest {
         this.chapters = new ArrayList<Chapter>();
         this.chapters.add(chapter);
         this.testDate = new Date();
+        this.exerciseResults = new ArrayList<>();
      //   this.currentExercise = new MemoryExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
     }
 

@@ -174,8 +174,15 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
      * @return the rowID of the inserted memoriser
      */
     public long insertMemoriser(Memoriser user){
-        String statement = user.getInsertStatement();
-        long id = db.insert("Memoriser",null,user.getContentValues());
+        String statement = user.getsSelectStatement();
+        Cursor cursor = execCursorQuery(statement);
+        long id;
+        if (cursor != null && cursor.getCount() > 0){
+            cursor.moveToFirst();
+           id = cursor.getInt(cursor.getColumnIndex("id"));
+        } else {
+            id = db.insert("Memoriser", null, user.getContentValues());
+        }
         user.setMemoriserID(id);
         return id;
     }

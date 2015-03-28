@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision.verse;
 
+import android.util.Log;
+
 import com.gre.jamal.memorisequran.App;
 import com.gre.jamal.memorisequran.db.Memoriser;
 import com.gre.jamal.memorisequran.revision.QuranSection;
@@ -55,8 +57,12 @@ public class VerseOrderTest extends MemoryTest {
 
     @Override
     public MemoryExercise getNextExercise() {
-        VerseExerciseResult result = ((VerseOrderExercise)currentExercise).getResult();
-        exerciseResults.add(result);
+        try {
+            VerseExerciseResult result = ((VerseOrderExercise) currentExercise).getResult();
+            exerciseResults.add(result);
+        } catch (NullPointerException npe){
+            Log.d("First run", "There is no result for this run");
+        }
         
         Verse temp = currentVerse;
         if (currentVerse.getVerseNumber() != currentVerse.getChapter().getVerseCount()) {
@@ -73,6 +79,7 @@ public class VerseOrderTest extends MemoryTest {
     private void saveResults(){
         for (ExerciseResult result : exerciseResults){
             Memoriser user = App.getUser();
+
         }
     }
 

@@ -57,12 +57,12 @@ public class Memoriser {
     public ContentValues getContentValues(){
         ContentValues userValues = new ContentValues();
         userValues.put("username", this.username);
-        userValues.put("username", this.age);
+        userValues.put("age", this.age);
         return userValues;
     }
 
-    public String getInsertStatement() {
-        return "INSERT INTO Memoriser (username, age)" +
-                "Values ("+ this.username +","+ this.age +")";
+    public String getsSelectStatement() {
+        return "SELECT * FROM Memoriser " +
+                "WHERE username = '" + username +"'";
     }
 }
