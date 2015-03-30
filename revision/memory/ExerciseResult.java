@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision.memory;
 
+import android.content.ContentValues;
+
 /**
  * Created by jamal on 12/03/15.
  */
@@ -49,4 +51,6 @@ public abstract class ExerciseResult {
     public void setExerciseType(int exerciseType) {
         this.exerciseType = exerciseType;
     }
+
+    public abstract ContentValues getContentValues(long testID);
 }

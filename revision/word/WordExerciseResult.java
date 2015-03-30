@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision.word;
 
+import android.content.ContentValues;
+
 import com.gre.jamal.memorisequran.revision.memory.ExerciseResult;
 
 /**
@@ -20,6 +22,11 @@ public class WordExerciseResult extends ExerciseResult {
         super(chapterNumber, verseNumber, exerciseType, correct);
         this.exerciseType = RESULT_TYPE_WORD;
         this.wordNumber = -1;
+    }
+
+    @Override
+    public ContentValues getContentValues(long testID) {
+        return null;
     }
 
     public WordExerciseResult(int chapterNumber, int verseNumber, int exerciseType, boolean correct, int wordNumber) {

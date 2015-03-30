@@ -1,5 +1,6 @@
 package com.gre.jamal.memorisequran.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -185,6 +186,10 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
         }
         user.setMemoriserID(id);
         return id;
+    }
+
+    public long insert(String table, ContentValues values){
+        return db.insert(table,null,values);
     }
 
 

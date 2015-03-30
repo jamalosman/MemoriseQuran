@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision;
 
+import android.content.ContentValues;
+
 import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
 import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
 
@@ -19,6 +21,11 @@ public class VowellingTest extends MemoryTest {
 
     public VowellingTest(QuranSection quranSection, int testLevel, Chapter chapter) {
         super(quranSection, testLevel, chapter);
+    }
+
+    @Override
+    protected ContentValues getContentValues() {
+        return null;
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.gre.jamal.memorisequran.revision.verse;
 
+import android.content.ContentValues;
 import android.util.Log;
 
 import com.gre.jamal.memorisequran.App;
 import com.gre.jamal.memorisequran.db.Memoriser;
+import com.gre.jamal.memorisequran.db.SQLiteConnectivity;
 import com.gre.jamal.memorisequran.revision.QuranSection;
 import com.gre.jamal.memorisequran.revision.memory.ExerciseResult;
 import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
@@ -13,7 +15,9 @@ import org.jqurantree.orthography.Chapter;
 import org.jqurantree.orthography.Document;
 import org.jqurantree.orthography.Verse;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by jamal on 15/01/15.
@@ -43,6 +47,18 @@ public class VerseOrderTest extends MemoryTest {
         this.currentExercise = new VerseOrderExercise(chapters.get(0).getVerse(quranSection.getStartVerseIndex()));
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_VERSE;
+    }
+
+    @Override
+    protected ContentValues getContentValues() {
+        ContentValues testValues = new ContentValues();
+        testValues.put("memoriser_id",App.getUser().getMemoriserID());
+        testValues.put("chapter_number",this.quranSection.getStartChapterIndex());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        testValues.put("timestamp", dateFormat.format(new Date()));
+
+
+        return testValues;
     }
 
     /**
@@ -77,9 +93,61 @@ public class VerseOrderTest extends MemoryTest {
     }
 
     private void saveResults(){
+        Memoriser user = App.getUser();
+        ContentValues testValues = this.getContentValues();
+        SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
+        long testID = sqliteConn.insert("test", this.getContentValues());
+        ArrayList<Integer> correctList =  new ArrayList<>();
         for (ExerciseResult result : exerciseResults){
-            Memoriser user = App.getUser();
+            sqliteConn.insert("verse_exercise_result", result.getContentValues(testID));
+            correctList.add(result.getContentValues(testID).getAsInteger("is_correct"));
+        }
+        if (!correctList.contains(0)){
+            updateTestScore(100,testID, 1);
+        } else {
+            int verseWeight = 100 / Document.getChapter(quranSection.getStartChapterIndex())
+                    .getVerseCount();
+            int memoryStrength = 0;
+            for(Integer i : correctList){
+                if (i.equals(1)){
+                    memoryStrength += verseWeight;
+                }
+            }
+            updateTestScore(memoryStrength,testID);
+        }
+    }
+    private boolean updateTestScore(int memoryStrength, long testID){
+        try {
+            SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
+            String statement =  "UPDATE chapter " +
+                    "SET memory_strength_verse_order = "+memoryStrength +
+                    "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
+                    "" +
+                    "UPDATE test" +
+                    "SET memory_strength = " +memoryStrength +
+                    "WHERE test_id = " + testID+";";
+            sqliteConn.execNonQuery(statement);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 
+    private boolean updateTestScore(int memoryStrength, long testID, int isMemorised){
+        try {
+            SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
+            String statement =  "UPDATE chapter " +
+                    "SET is_memorised = "+isMemorised+", " +
+                    "memory_strength_verse_order = "+memoryStrength +
+                    "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
+                    "" +
+                    "UPDATE test" +
+                    "SET  is_memorised = "+isMemorised+", memory_strength = " +memoryStrength +
+                    "WHERE test_id = " + testID+";";
+            sqliteConn.execNonQuery(statement);
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 

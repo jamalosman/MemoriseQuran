@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision.memory;
 
+import android.content.ContentValues;
+
 import com.gre.jamal.memorisequran.revision.QuranSection;
 
 import org.jqurantree.orthography.Chapter;
@@ -55,7 +57,7 @@ public abstract class MemoryTest {
 
 
 
-
+    protected abstract ContentValues getContentValues();
 
     public int getTestType() {
         return testType;

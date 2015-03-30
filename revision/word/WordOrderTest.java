@@ -1,5 +1,7 @@
 package com.gre.jamal.memorisequran.revision.word;
 
+import android.content.ContentValues;
+
 import com.gre.jamal.memorisequran.revision.QuranSection;
 import com.gre.jamal.memorisequran.revision.memory.MemoryExercise;
 import com.gre.jamal.memorisequran.revision.memory.MemoryTest;
@@ -39,6 +41,11 @@ public class WordOrderTest extends MemoryTest {
         this.currentExercise = new WordOrderExercise(chapter.getVerse(quranSection.getStartVerseIndex()), 0);
         currentVerse = Document.getChapter(quranSection.getStartChapterIndex()).getVerse(quranSection.getStartVerseIndex());
         this.testType = TEST_TYPE_WORD;
+    }
+
+    @Override
+    protected ContentValues getContentValues() {
+        return null;
     }
 
     /**
