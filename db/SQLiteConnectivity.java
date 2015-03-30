@@ -192,5 +192,4 @@ public class SQLiteConnectivity extends SQLiteOpenHelper {
         return db.insert(table,null,values);
     }
 
-
 }
