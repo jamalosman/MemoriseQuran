@@ -105,9 +105,9 @@ public class VerseOrderTest extends MemoryTest {
         if (!correctList.contains(0)){
             updateTestScore(100,testID, 1);
         } else {
-            int verseWeight = 100 / Document.getChapter(quranSection.getStartChapterIndex())
+            double verseWeight = 100 / Document.getChapter(quranSection.getStartChapterIndex())
                     .getVerseCount();
-            int memoryStrength = 0;
+            double memoryStrength = 0;
             for(Integer i : correctList){
                 if (i.equals(1)){
                     memoryStrength += verseWeight;
@@ -116,15 +116,15 @@ public class VerseOrderTest extends MemoryTest {
             updateTestScore(memoryStrength,testID);
         }
     }
-    private boolean updateTestScore(int memoryStrength, long testID){
+    private boolean updateTestScore(double memoryStrength, long testID){
         try {
             SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
             String statement =  "UPDATE chapter " +
-                    "SET memory_strength_verse_order = "+memoryStrength +
+                    "SET memory_strength_verse_order = "+memoryStrength + " " +
                     "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
-                    "" +
-                    "UPDATE test" +
-                    "SET memory_strength = " +memoryStrength +
+                    " " +
+                    "UPDATE test " +
+                    "SET memory_strength = " +memoryStrength + " " +
                     "WHERE test_id = " + testID+";";
             sqliteConn.execNonQuery(statement);
             return true;
@@ -133,16 +133,16 @@ public class VerseOrderTest extends MemoryTest {
         }
     }
 
-    private boolean updateTestScore(int memoryStrength, long testID, int isMemorised){
+    private boolean updateTestScore(double memoryStrength, long testID, int isMemorised){
         try {
             SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
             String statement =  "UPDATE chapter " +
                     "SET is_memorised = "+isMemorised+", " +
-                    "memory_strength_verse_order = "+memoryStrength +
+                    "memory_strength_verse_order = "+memoryStrength +" "+
                     "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
-                    "" +
-                    "UPDATE test" +
-                    "SET  is_memorised = "+isMemorised+", memory_strength = " +memoryStrength +
+                    " " +
+                    "UPDATE test " +
+                    "SET memory_strength = " +memoryStrength +" "+
                     "WHERE test_id = " + testID+";";
             sqliteConn.execNonQuery(statement);
             return true;

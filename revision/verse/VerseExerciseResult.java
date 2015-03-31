@@ -60,7 +60,6 @@ public class VerseExerciseResult extends ExerciseResult {
         ContentValues resultValues = new ContentValues();
         resultValues.put("test_id", testID);
         resultValues.put("verse_id", App.getVerseID(chapterNumber, verseNumber));
-        resultValues.put("verse_number", verseNumber);
         resultValues.put("correct_answer", correctVerse);
         resultValues.put("given_answer", chosenVerse);
         resultValues.put("is_correct", correct ? 1 : 0);
