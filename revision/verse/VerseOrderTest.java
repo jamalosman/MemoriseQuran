@@ -52,12 +52,10 @@ public class VerseOrderTest extends MemoryTest {
     @Override
     protected ContentValues getContentValues() {
         ContentValues testValues = new ContentValues();
-        testValues.put("memoriser_id",App.getUser().getMemoriserID());
-        testValues.put("chapter_number",this.quranSection.getStartChapterIndex());
+        testValues.put("memoriser_id", App.getUser().getMemoriserID());
+        testValues.put("chapter_number", this.quranSection.getStartChapterIndex());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         testValues.put("timestamp", dateFormat.format(new Date()));
-
-
         return testValues;
     }
 
@@ -76,14 +74,14 @@ public class VerseOrderTest extends MemoryTest {
         try {
             VerseExerciseResult result = ((VerseOrderExercise) currentExercise).getResult();
             exerciseResults.add(result);
-        } catch (NullPointerException npe){
+        } catch (NullPointerException npe) {
             Log.d("First run", "There is no result for this run");
         }
-        
+
         Verse temp = currentVerse;
         if (currentVerse.getVerseNumber() != currentVerse.getChapter().getVerseCount()) {
             currentVerse = currentVerse.getChapter().getVerse(currentVerse.getVerseNumber() + 1);
-            currentExercise =  new VerseOrderExercise(temp);
+            currentExercise = new VerseOrderExercise(temp);
             return currentExercise;
         } else {
             // when the test is finished
@@ -92,63 +90,68 @@ public class VerseOrderTest extends MemoryTest {
         }
     }
 
-    private void saveResults(){
+    private void saveResults() {
         Memoriser user = App.getUser();
         ContentValues testValues = this.getContentValues();
         SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
         long testID = sqliteConn.insert("test", this.getContentValues());
-        ArrayList<Integer> correctList =  new ArrayList<>();
-        for (ExerciseResult result : exerciseResults){
+        ArrayList<Integer> correctList = new ArrayList<>();
+        for (ExerciseResult result : exerciseResults) {
             sqliteConn.insert("verse_exercise_result", result.getContentValues(testID));
             correctList.add(result.getContentValues(testID).getAsInteger("is_correct"));
         }
-        if (!correctList.contains(0)){
-            updateTestScore(100,testID, 1);
+        if (!correctList.contains(0)) {
+            updateTestScore(100, testID, 1);
         } else {
             double verseWeight = 100 / Document.getChapter(quranSection.getStartChapterIndex())
                     .getVerseCount();
             double memoryStrength = 0;
-            for(Integer i : correctList){
-                if (i.equals(1)){
+            for (Integer i : correctList) {
+                if (i.equals(1)) {
                     memoryStrength += verseWeight;
                 }
             }
-            updateTestScore(memoryStrength,testID);
-        }
-    }
-    private boolean updateTestScore(double memoryStrength, long testID){
-        try {
-            SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
-            String statement =  "UPDATE chapter " +
-                    "SET memory_strength_verse_order = "+memoryStrength + " " +
-                    "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
-                    " " +
-                    "UPDATE test " +
-                    "SET memory_strength = " +memoryStrength + " " +
-                    "WHERE test_id = " + testID+";";
-            sqliteConn.execNonQuery(statement);
-            return true;
-        } catch (Exception ex) {
-            return false;
+            updateTestScore(memoryStrength, testID);
         }
     }
 
-    private boolean updateTestScore(double memoryStrength, long testID, int isMemorised){
+    private boolean updateTestScore(double memoryStrength, long testID) {
+        boolean success;
         try {
             SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
-            String statement =  "UPDATE chapter " +
-                    "SET is_memorised = "+isMemorised+", " +
-                    "memory_strength_verse_order = "+memoryStrength +" "+
-                    "WHERE chapter_number = " + quranSection.getStartChapterIndex()+";" +
-                    " " +
-                    "UPDATE test " +
-                    "SET memory_strength = " +memoryStrength +" "+
-                    "WHERE test_id = " + testID+";";
-            sqliteConn.execNonQuery(statement);
-            return true;
+            String chapterStatement = "UPDATE chapter " +
+                    "SET memory_strength_verse_order = " + memoryStrength + " " +
+                    "WHERE chapter_number = " + quranSection.getStartChapterIndex() + ";";
+            String testStatement = "UPDATE test " +
+                    "SET memory_strength = " + memoryStrength + " " +
+                    "WHERE id = " + testID + ";";
+            sqliteConn.execNonQuery(chapterStatement);
+            sqliteConn.execNonQuery(testStatement);
+            success = true;
         } catch (Exception ex) {
-            return false;
+            success = false;
         }
+        return success;
+    }
+
+    private boolean updateTestScore(double memoryStrength, long testID, int isMemorised) {
+        boolean success;
+        try {
+            SQLiteConnectivity sqliteConn = SQLiteConnectivity.getSQLiteConn();
+            String chapterStatement = "UPDATE chapter " +
+                    "SET is_memorised = " + isMemorised + ", " +
+                    "memory_strength_verse_order = " + memoryStrength + " " +
+                    "WHERE chapter_number = " + quranSection.getStartChapterIndex() + ";";
+            String testStatement = "UPDATE test " +
+                    "SET memory_strength = " + memoryStrength + " " +
+                    "WHERE id = " + testID + ";";
+            sqliteConn.execNonQuery(chapterStatement);
+            sqliteConn.execNonQuery(testStatement);
+            success = true;
+        } catch (Exception ex) {
+            success = false;
+        }
+        return success;
     }
 
 }
