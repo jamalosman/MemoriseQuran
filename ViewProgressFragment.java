@@ -10,11 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.text.NumberFormat;
 
 
 /**
@@ -23,6 +26,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 public class ViewProgressFragment extends Fragment {
 
     Spinner chapterSpinner;
+    GraphView graph;
+    boolean viewingSingleChapter = false;
 
     public ViewProgressFragment() {
         // Required empty public constructor
@@ -42,7 +47,7 @@ public class ViewProgressFragment extends Fragment {
     public void onStart() {
         super.onStart();
         // load graph view
-        GraphView graph = (GraphView) getActivity().findViewById(R.id.graph);
+        graph = (GraphView) getActivity().findViewById(R.id.graph);
 
         //load spinners view and insert values
         Spinner graphSpinner = (Spinner) getActivity().findViewById(R.id.graphSpinner);
@@ -57,8 +62,21 @@ public class ViewProgressFragment extends Fragment {
         chapterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         chapterSpinner.setAdapter(chapterAdapter);
 
+        Viewport viewport = graph.getViewport();
+        viewport.setScrollable(true);
+        viewport.setYAxisBoundsManual(true);
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMaxY(100);
+        viewport.setMaxX(10);
 
-         AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(0);
+        nf.setMinimumIntegerDigits(1);
+        nf.setMaximumFractionDigits(0);
+        nf.setMaximumIntegerDigits(3);
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf, nf));
+
+        graphSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onGraphTypeChosen(position);
@@ -68,27 +86,38 @@ public class ViewProgressFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        };
+        });
+        chapterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                onChapterChosen(position);
+            }
 
-        graphSpinner.setOnItemSelectedListener(spinnerListener);
-        chapterSpinner.setOnItemSelectedListener(spinnerListener);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void onGraphTypeChosen(int position) {
-        GraphView graph = (GraphView) getActivity().findViewById(R.id.graph);
-        Viewport viewport = graph.getViewport();
         graph.removeAllSeries();
+        Viewport viewport = graph.getViewport();
         switch (position) {
             case 0:
-                viewport.setMaxX(114);
-                viewport.setMaxY(100);
+                viewingSingleChapter = false;
+                chapterSpinner.setVisibility(View.INVISIBLE);
+                viewport.setMaxX(40);
+                //graph.getGridLabelRenderer().setNumHorizontalLabels(10);
                 BarGraphSeries<DataPoint> lseries = Graphing.getChaptersBarChart(0, 115);
                 graph.addSeries(lseries);
                 break;
-            case 1  :
+            case 1:
+                viewingSingleChapter = true;
                 chapterSpinner.setVisibility(View.VISIBLE);
-                viewport.setMaxX(20);
+                viewport.setMaxX(10);
                 viewport.setMaxY(100);
+                graph.getGridLabelRenderer().setNumVerticalLabels(5);
                 LineGraphSeries<DataPoint> series = Graphing.getSingleChapterLineChart(
                         chapterSpinner.getSelectedItemPosition() + 1, 0, 50);
                 graph.addSeries(series);
@@ -96,4 +125,12 @@ public class ViewProgressFragment extends Fragment {
         }
     }
 
+    private void onChapterChosen(int position) {
+        if (viewingSingleChapter) {
+            graph.removeAllSeries();
+            LineGraphSeries<DataPoint> series = Graphing.getSingleChapterLineChart(
+                    chapterSpinner.getSelectedItemPosition() + 1, 0, 50);
+            graph.addSeries(series);
+        }
+    }
 }
