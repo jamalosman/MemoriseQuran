@@ -14,6 +14,8 @@ This is android application to help users memorise the Qur'an, current features 
  - UI Rewrite
  - Collect data from all test mechanisms.
  - Page Order Test
- - Vowelling Test (give the user the verse without short vowels and ask them to fill them in)
+ - Vowelling Test (give the user the verse without short vowels and ask them to fill them in).
+
+App can be downloaded here - http://tiny.cc/mquran
  
  
